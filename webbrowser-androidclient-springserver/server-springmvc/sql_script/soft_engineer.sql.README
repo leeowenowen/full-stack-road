@@ -1,0 +1,23 @@
+create database software_engineer;
+use software_engineer;
+create table programmer(id int not null auto_increment comment 'auto increment id', gender enum('male','female') default 'male' comment 'gender of prgrammer, must in [male,female]', name varchar(128) not null comment 'name', create_time datetime not null comment 'create time', update_time datetime not null comment 'last update time', primary key(id), key index_name(name)) engine=InnoDB default charset=utf8 comment='programmer table';
++-------------+-----------------------+------+-----+---------+----------------+
+| Field       | Type                  | Null | Key | Default | Extra          |
++-------------+-----------------------+------+-----+---------+----------------+
+| id          | int(11)               | NO   | PRI | NULL    | auto_increment |
+| gender      | enum('male','female') | YES  |     | male    |                |
+| name        | varchar(128)          | NO   | MUL | NULL    |                |
+| create_time | datetime              | NO   |     | NULL    |                |
+| update_time | datetime              | NO   |     | NULL    |                |
++-------------+-----------------------+------+-----+---------+----------------+
+insert into programmer(gender, name, create_time, update_time) values('male', 'mahuateng', now(), now());
+insert into programmer(gender, name, create_time, update_time) values('male', 'wangjian', now(), now());
+insert into programmer(gender, name, create_time, update_time) values('female', 'yuguoli', now(), now());
+select * from programmer;
++----+--------+-----------+---------------------+---------------------+
+| id | gender | name      | create_time         | update_time         |
++----+--------+-----------+---------------------+---------------------+
+|  1 | male   | mahuateng | 2016-04-04 20:37:58 | 2016-04-04 20:37:58 |
+|  2 | male   | wangjian  | 2016-04-04 20:38:14 | 2016-04-04 20:38:14 |
+|  3 | female | yuguoli   | 2016-04-04 20:40:19 | 2016-04-04 20:40:19 |
++----+--------+-----------+---------------------+---------------------+

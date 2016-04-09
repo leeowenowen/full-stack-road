@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <script src="jquery/jquery-1.12.1.min.js" type="text/javascript"></script>
+
+    <link href="css/data_table.css" rel="stylesheet" type="text/css"/>
+    <link href="css/popup_mask.css" rel="stylesheet" type="text/css"/>
+    <script src="js/make_data_table.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var server_prefix = "http://localhost:9090/programmer/";
+
+        function makeProgrammerTable(programmers) {
+            var headers = [
+                "Id", "Name", "Gender"
+            ];
+            var keys = [
+                "id", "name", "gender"
+            ];
+            return makeTable(headers, keys, programmers);
+        }
+
+        function showEditLayer() {
+            document.getElementById('div_popup_edit').style.display = 'block';
+            document.getElementById('div_mask').style.display = 'block';
+        }
+        function hideEditLayer() {
+            document.getElementById('div_popup_edit').style.display = 'none';
+            document.getElementById('div_mask').style.display = 'none';
+        }
+
+        function editRow(row) {
+            showEditLayer();
+
+            var id = row.cells[0].innerHTML;
+            var name = row.cells[1].innerHTML;
+            var gender = row.cells[2].innerHTML;
+
+            document.getElementById("edit_id").value = id;
+            document.getElementById("edit_name").value = name;
+            document.getElementById("edit_gender").value = gender;
+            document.getElementById("edit_ok").onclick = function () {
+                var new_id = document.getElementById("edit_id").value;
+                var new_name = document.getElementById("edit_name").value;
+                var new_gender = document.getElementById("edit_gender").value;
+                if (id != new_id || name != new_name || gender != new_gender) {
+                    //do update request
+                    var url = server_prefix + 'update?id=' + id + "&name=" + new_name +
+                            "&gender=" + new_gender;
+                    $.ajax({
+                        url: url,
+                        success: function (data) {
+                            if (data.code == 0) {
+                                alert("update success!");
+                                query();
+                            } else {
+                                alert("update failed!")
+                            }
+                        },
+
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {  //#3这个error函数调试时非常有用，如果解析不正确，将会弹出错误框
+                            alert(XMLHttpRequest.status);
+                            alert(XMLHttpRequest.readyState);
+                            alert(textStatus);
+                            alert(errorThrown);
+                        },
+                    });
+                }
+                hideEditLayer();
+            }
+            document.getElementById("edit_cancel").onclick = function () {
+                hideEditLayer();
+            }
+        }
+        function deleteRow(row) {
+            var id = row.cells[0].innerHTML;
+            var url = server_prefix + 'delete?id=' + id;
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    if (data.code == 0) {
+                        alert("delete success!");
+                        query();
+                    } else {
+                        alert("delete failed!")
+                    }
+                },
+
+                error: function (XMLHttpRequest, textStatus, errorThrown) {  //#3这个error函数调试时非常有用，如果解析不正确，将会弹出错误框
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus); // paser error;
+                    alert(errorThrown);
+                },
+            });
+        }
+        //insert edit and delete button into data table
+        function insertOpElements(table) {
+            var row_len = table.rows.length;
+            for (var i = 0; i < table.rows.length; i++) {
+                var row = table.rows[i];
+                var td = document.createElement("td");
+                if(i == 0){//header
+                    td.className = "td_class_header";
+                    td.innerHTML="Operations";
+                }else {
+                    td.className = "td_class_body";
+                    row.id = "row_id" + i;
+                    var btnEdit = document.createElement("input");
+                    btnEdit.value = "edit";
+                    btnEdit.type = "button";
+                    btnEdit.id = "edit_id" + i;
+                    btnEdit.className = "btn_class";
+
+                    var btnDelete = document.createElement("input");
+                    btnDelete.value = "delete";
+                    btnDelete.type = "button";
+                    btnDelete.id = "delete_id" + i;
+                    btnDelete.className = "btn_class";
+                    td.appendChild(btnEdit);
+                    td.appendChild(btnDelete);
+                }
+                row.appendChild(td);
+            }
+            for (var i = 1; i < table.rows.length; i++) {
+                var row = table.rows[i];
+                $("#edit_id" + i).bind("click", {row: row}, function (event) {
+                    var cur_row = event.data.row;
+                    editRow(cur_row);
+                });
+                $("#delete_id" + i).bind("click", {row: row}, function (event) {
+                    var cur_row = event.data.row;
+                    deleteRow(cur_row);
+                });
+                $("td").bind("dblclick", {row: row}, function (event) {
+                    var cur_row = event.data.row;
+                    editRow(cur_row);
+                });
+            }
+        }
+
+        function query() {
+            var name = document.getElementById("name").value;
+            var url = server_prefix + 'query?name=' + name;
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    if (data.code == 0) {
+                        var programmers = data.data.programmers;
+                        var html = makeProgrammerTable(programmers);
+                        var div_table_content = document.getElementById("div_table_content");
+                        div_table_content.innerHTML = html;
+                        var table = document.getElementById("table_id");
+                        insertOpElements(table);
+                    }
+                },
+
+                error: function (XMLHttpRequest, textStatus, errorThrown) {  //#3这个error函数调试时非常有用，如果解析不正确，将会弹出错误框
+                    alert(XMLHttpRequest.status);
+                    alert(XMLHttpRequest.readyState);
+                    alert(textStatus); // paser error;
+                    alert(errorThrown);
+                },
+            });
+        }
+
+        function add() {
+            showEditLayer();
+
+            document.getElementById("p_edit_id").style.display = 'none';
+            document.getElementById("edit_reset").click();
+            document.getElementById("edit_ok").onclick = function () {
+                var name = document.getElementById("edit_name").value;
+                var gender = document.getElementById("edit_gender").value;
+                if (name != null || gender != null) {
+                    //do add request
+                    var url = server_prefix + 'add?name=' + name +
+                            "&gender=" + gender;
+                    $.ajax({
+                        url: url,
+                        success: function (data) {
+                            if (data.code == 0) {
+                                alert("add success!");
+                                query();
+                            } else {
+                                alert("add failed!")
+                            }
+                        },
+
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {  //#3这个error函数调试时非常有用，如果解析不正确，将会弹出错误框
+                            alert(XMLHttpRequest.status);
+                            alert(XMLHttpRequest.readyState);
+                            alert(textStatus); // paser error;
+                            alert(errorThrown);
+                        },
+                    });
+                }
+                document.getElementById("p_edit_id").style.display = 'block';
+                hideEditLayer();
+            }
+            document.getElementById("edit_cancel").onclick = function () {
+                document.getElementById("p_edit_id").style.display = 'block';
+                hideEditLayer();
+            }
+        }
+
+    </script>
+</head>
+<body>
+<div id="div_form">
+    <form id="form_op_id">
+        <p>name: <input type="text" id="name" style="width: 300px"/></p>
+        <p><input type="button" class="btn_class" value="Query" onclick="query()"/><input type="button"
+                                                                                          class="btn_class" value="Add"
+                                                                                          onclick="add()"/></p>
+    </form>
+</div>
+<div id="div_table_content">
+</div>
+<div id="div_popup_edit" class="popup_window" style="display:none;">
+    <form id="form_edit_id">
+        <p id="p_edit_id">id: <input type="text" id="edit_id" readonly style="width: 300px"/></p>
+        <p>name: <input type="text" id="edit_name" style="width: 300px"/></p>
+        <p>gender:
+            <select id="edit_gender" style="width: 300px">
+                <option value="male">male</option>
+                <option value="female">female</option>
+            </select>
+        </p>
+        <p><input type="button" class="btn_class" id="edit_cancel" value="Cancel"/><input type="button"
+                                                                                          class="btn_class" value="OK"
+                                                                                          id="edit_ok"/></p>
+        <input type="reset" id="edit_reset" style="display: none;"/>
+    </form>
+</div>
+<div id="div_mask" class="mask_layer" style="display:none;"></div>
+
+</body>
+</html>
+</html>

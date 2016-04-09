@@ -26,3 +26,64 @@
 *.exe
 *.out
 *.app
+
+.settings
+target
+logs
+tmp
+test-result
+.classpath
+.project
+precompiled
+.DS_Store
+dist
+eclipse
+*/bin
+.idea
+*.ipr
+*.iws
+*.iml
+*.class
+.DS_Store
+mybatis-generator/
+**/**/lib/*.jar
+**/lib/*.jar
+
+*.log
+*.db
+*.sw[po]
+
+
+# Gradle
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+
+# Android Studio
+.idea/
+*.iml
+captures/
+
+# Eclipse
+*/**/.classpath
+*/**/.project
+*/**/.settings/
+*/**/bin/
+*/**/gen/
+*/**/.class
+
+# Vim
+.*.sw[po]
+
+# Python Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+# Output folder
+out/
+
+local.properties

@@ -1,0 +1,46 @@
+.td_class_header {
+    font-family:"Trebuchet MS", Arial, Helvetica, sans-serif;
+    background-color:#A7C942;
+    color:#ffffff;
+    border: solid 1px #add9c0;
+    padding:10px 20px 10px 20px;
+}
+
+.td_class_body {
+    border: solid 1px #add9c0;
+    padding:10px 20px 10px 20px;
+}
+
+.tr_class_header {
+
+}
+
+.thead_class {
+    border: solid 1px #add9c0;
+}
+
+.tbody_class {
+    border: solid 1px #add9c0;
+}
+
+.table_class {
+    /*border: 1px solid #add9c0;*/
+    border-collapse:collapse;
+    cellspacing: 0;
+    border: solid 1px #add9c0;
+    padding:10px 10px 10px 10px;
+    empty-cells: show;
+}
+
+.btn_class {
+    background-color: #4CAF50;
+    border: solid 1px #add9c0;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}

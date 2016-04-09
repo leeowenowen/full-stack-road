@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ProgrammerClient</string>
+    <string name="action_refresh">Refresh</string>
+</resources>

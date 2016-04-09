@@ -1,0 +1,20 @@
+.popup_window {
+    background-color:#9D9D9D;
+    width: 50%;
+    height: 70%;
+    z-index: 2;
+    left: 20%;
+    top: 20%;
+    position: absolute;
+}
+.mask_layer {
+    background-color:#000;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    color:#ffff0000;
+    opacity: 0.5;
+    position: absolute;
+}
