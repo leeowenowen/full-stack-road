@@ -1,7 +1,7 @@
 
 本文以一个小例子展示了如何构建一个包括基础服务（Java实现的Programmer增删查改），运营配置页面（Programmer管理web页面）以及展示所有Programmer的Android客户端的小型系统，以更好的帮助大家理解各方的功能实现以及涉及的技术，各节点通信交互关系如下：
 
-![main](http://img2.tbcdn.cn/L1/461/1/38543ffc5b4ebabbd687f1b8024593ff01ecec12)
+![main](https://raw.githubusercontent.com/wiki/leeowenowen/full-stack-road/structure.png)
 
 ###涉及的技术：
 * 使用SpringMVC+mybatis+mysql构建服务
@@ -56,7 +56,7 @@ insert into programmer(gender, name, create_time, update_time) values('female', 
 数据库构建之后，就可以构建java服务了，服务运行之后，可以通过浏览器请求访问，如下：  
 整个Java工程结构如下，你可以使用Idea直接打开。
 
-![spring_project_struture](http://img2.tbcdn.cn/L1/461/1/fd1e0d8895910e3f19eebbfc90240b3aad40c813)
+![spring_project_struture](https://raw.githubusercontent.com/wiki/leeowenowen/full-stack-road/java1.png)
 
 工程包括三个部分：
 *. common：管理所有依赖库的版本。
@@ -71,7 +71,7 @@ insert into programmer(gender, name, create_time, update_time) values('female', 
 
 生成之后你就可以看到如下实体类了，拷贝到自己的项目Dao模块中即可：
 
-![mybatis_structure](http://img1.tbcdn.cn/L1/461/1/664fd4ddd48190100ef57c2129e47fab15634706)
+![mybatis_structure](https://raw.githubusercontent.com/wiki/leeowenowen/full-stack-road/java2.png)
 
 然后你就可以使用这些对象（Programmer,ProgrammerMapper)来实现代码级增删查改功能了，当然了写sql的步骤少不了了，只是被隔离到了resouce mapper这一层。实际操作中你会需要自定义一些sql及其对应的Java函数，不过不用担心， 官方中文文档还是很齐备的，参见[这里](http://www.mybatis.org/mybatis-3/zh/index.html)
 
@@ -138,11 +138,11 @@ Spring MVC框架的很多功能都是使用依赖注入实现，你只需要简�
 
 说运营系统有点大了，其实就是个管理页面，只是我们运营平台的一个主要工作就是做类似的数据管理配置，这里只是为了说明原理，最终完成的页面如下：
 
-![web_screenshot](http://img2.tbcdn.cn/L1/461/1/5a4dfda362322452110903a9b276e239128550e5)
+![web_screenshot](https://raw.githubusercontent.com/wiki/leeowenowen/full-stack-road/web1.png)
 
 工程代码结构如下：
 
-![web_root](http://img3.tbcdn.cn/L1/461/1/4b2c6002cb98076f52afdd8e45578002ac110320)
+![web_root](https://raw.githubusercontent.com/wiki/leeowenowen/full-stack-road/web2.png)
 
 * css文件：实现表格和弹出编辑层的样式。
 * make_data_table.js：根据表头和返回的json数据生成table。
@@ -193,7 +193,7 @@ Spring MVC框架的很多功能都是使用依赖注入实现，你只需要简�
 
 我本身是做客户端的，所以Android相关的东西就比较得心应手了，由于刚刚对RxJava做了些研究，个人也比较喜欢， 所以本文的核心实现是用okhttp+rxjava实现的，界面如下：
 
-![android_screenshot](http://img2.tbcdn.cn/L1/461/1/8aaf3599c25228da0d78f205db91c234a8e5d400)
+![android_screenshot](https://raw.githubusercontent.com/wiki/leeowenowen/full-stack-road/android1.png)
 
 点击设置中的Refresh或者FloatActionButton就可以查询服务器获取到最新的Programmer信息并使用ListView呈现。
 
